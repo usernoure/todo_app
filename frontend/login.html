@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion - Todo App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html">
+                <img src="images/logo_todolist.png" alt="Todo App Logo" class="logo">
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="task.html">Liste de tâches</a></li>
+                </ul>
+            </nav>
+            <nav class="auth-nav">
+                <ul>
+                    <li><a href="register.html" class="btn">S'inscrire</a></li>
+                    <li><a href="login.html" class="btn active" id="loginLink">Se connecter</a></li>
+                    <li><a href="#" class="btn" id="logoutLink" style="display: none;" onclick="logout()">Se déconnecter</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="form-container">
+            <h2>Connectez-vous</h2>
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <button type="button" class="modern-btn" onclick="login()">Connexion</button>
+    </div>
+    <footer>
+        <p>© 2024 Todo App. Tous droits réservés.</p>
+    </footer>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+body, h1, form {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    justify-content: center;
+}
+
+header {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+    vertical-align: middle;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    padding: 10px 20px;
+}
+
+h1 {
+    color: #0056b3;
+    font-size: 24px;
+}
+
+.auth-nav a {
+    padding: 8px 16px;
+    background-color: transparent;
+    color: #007BFF;
+    border: 2px solid #007BFF; /* Ajout d'un contour bleu */
+    border-radius: 20px; /* Bordures arrondies */
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease; /* Transition douce pour hover */
+    text-decoration: none; /* Supprimer le soulignement des liens */
+}
+
+.auth-nav a:hover {
+    background-color: #007BFF; /* Couleur de fond au survol */
+    color: white; /* Texte blanc au survol */
+}
+
+.main-nav ul, .auth-nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.main-nav ul li, .auth-nav ul li {
+    margin: 0 20px;
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.header-title span {
+    color: #0056b3;
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+.main-nav a, .auth-nav a {
+    color: #666;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover, .auth-nav a:hover, .main-nav a.active {
+    color: #007BFF;
+}
+
+.btn, .action-btn, .task-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    margin: 5px;
+}
+
+.btn:hover, .action-btn:hover, .task-btn:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn.add-task {
+    background-color: #28a745; /* Vert pour actions */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.action-btn.add-task:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+.task-btn {
+    background-color: #dc3545; /* Rouge pour les tâches critiques comme supprimer */
+    color: white;
+}
+
+.task-btn:hover {
+    background-color: #c82333;
+}
+
+.form-container {
+    width: 90%;
+    max-width: 800px;
+    padding: 40px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 60px auto; /* ajuster selon l'espacement désiré par rapport au header */
+    border-radius: 8px;
+    text-align: center;
+}
+
+.modern-btn {
+    width: auto; /* Taille selon le contenu */
+    padding: 10px 20px;
+    background-color: #007BFF; /* Couleur principale */
+    color: white;
+    border: 2px solid transparent; /* Border for hover effect */
+    border-radius: 30px;
+    font-size: 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    margin: 0 10px; /* Margin pour espacer les boutons */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.modern-btn:hover, .modern-btn:focus {
+    background-color: #0056b3; /* Couleur au survol */
+    border-color: #fff; /* Montre un contour blanc au survol */
+}
+
+section {
+    width: 90%;
+    max-width: 800px;
+    padding: 40px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 100px 20px 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #007BFF;
+    color: white;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 8px 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #888;
+}
+
+button:hover {
+    color: #000;
+}
+
+/* Container général pour la TodoList */
+#todoList {
+    list-style: none;
+    padding: 0;
+    margin: 40px auto; /* Augmente la marge pour plus de respiration */
+    width: 100%;
+    max-width: 600px; /* Taille maximale pour maintenir la lisibilité */
+    box-sizing: border-box;
+}
+
+/* Chaque élément de la liste */
+#todoList li {
+    background-color: #fff;
+    border: none; /* Retire les bordures classiques */
+    margin-bottom: 10px; /* Espacement vertical entre les éléments */
+    padding: 15px 20px;
+    border-radius: 8px; /* Bordures arrondies pour un look moderne */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce pour un effet de profondeur */
+    transition: transform 0.2s ease, box-shadow 0.3s ease; /* Animation pour hover */
+}
+
+#todoList li:hover {
+    transform: translateY(-3px); /* Effet de léger soulèvement */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Ombre plus prononcée au survol */
+}
+
+/* Texte de la tâche */
+.task-text {
+    flex-grow: 1;
+    font-size: 16px; /* Taille de police appropriée pour la lisibilité */
+    color: #333; /* Couleur foncée pour le contraste avec le fond */
+}
+
+/* Boutons d'action dans chaque élément de la liste */
+#todoList button {
+    font-size: 16px;
+    color: #6c757d; /* Gris pour un look désaturé et professionnel */
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+#todoList button:hover {
+    color: #007bff; /* Bleu pour une indication visuelle au survol */
+}
+
+/* Icônes Font Awesome utilisées dans les boutons */
+.fa-check, .fa-edit, .fa-trash-alt {
+    margin: 0 8px; /* Espacement autour des icônes */
+}
+
+.completed {
+    text-decoration: line-through; /* Barre les tâches complétées */
+    color: #aaa; /* Gris clair pour les tâches complétées */
+}
+
+/* ADMIN */
+
+.admin-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 100px auto 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.admin-container h1 {
+    color: #333333;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.admin-container h2 {
+    font-size: 22px;
+    color: #555;
+    margin-top: 20px;
+}
+
+#userList li, #taskList li {
+    padding: 12px 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#userList li:hover, #taskList li:hover {
+    background-color: #e9efff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#userList li span, #taskList li span {
+    font-weight: bold;
+    color: #0056b3;
+}
+
+.user-info {
+    cursor: pointer;
+    color: #007BFF;
+}
