@@ -5,19 +5,43 @@ const authenticateAdmin = require('../middlewares/authenticateAdmin');
 
 router.get('/users-tasks', authenticateAdmin, (req, res) => {
     const query = `
-        SELECT users.username, users.role, tasks.description, tasks.is_completed
+        SELECT users.id as userId, users.username, tasks.id as taskId, tasks.description, tasks.is_completed
         FROM users
         LEFT JOIN tasks ON users.id = tasks.user_id
+        ORDER BY users.id, tasks.id;
     `;
 
     db.query(query, (err, results) => {
         if (err) {
-            console.error('Error fetching users and tasks:', err);
             return res.status(500).send('Erreur de base de données');
         }
-        res.json(results);
+
+        const usersMap = {};
+
+        results.forEach(row => {
+            if (!usersMap[row.userId]) {
+                usersMap[row.userId] = {
+                    id: row.userId,
+                    username: row.username,
+                    tasks: []
+                };
+            }
+
+            if (row.taskId) {
+                usersMap[row.userId].tasks.push({
+                    id: row.taskId,
+                    description: row.description,
+                    is_completed: row.is_completed
+                });
+            }
+        });
+
+        res.json(Object.values(usersMap));
     });
 });
+
+
+
 
 router.delete('/users/:id', authenticateAdmin, (req, res) => {
     const userId = req.params.id;

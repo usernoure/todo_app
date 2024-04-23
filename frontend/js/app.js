@@ -1,7 +1,9 @@
 // Appelle au chargement de la page
 document.addEventListener('DOMContentLoaded', function() {
     checkLogin();
-    fetchTasks();
+    if (document.getElementById('todoList')) {
+        fetchTasks();  // N'appelle fetchTasks() que si l'élément 'todoList' existe
+    }
 });
 
 

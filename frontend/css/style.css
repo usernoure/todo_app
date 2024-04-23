@@ -15,7 +15,9 @@ body {
     width: 100%;
     margin: 0;
     padding: 20px;
-    justify-content: center;
+    padding-bottom: 60px; /* ajustez cela selon la hauteur de votre footer */
+    box-sizing: border-box;
+    justify-content: flex-start; /* Change from center to flex-start to allow natural flow */
 }
 
 header {
@@ -192,6 +194,7 @@ footer {
     width: 100%;
     position: fixed;
     bottom: 0;
+    height: 50px; /* Définir une hauteur fixe pour le footer */
 }
 
 input[type="text"], input[type="password"], input[type="email"] {
@@ -286,11 +289,12 @@ button:hover {
 .admin-container {
     width: 95%;
     max-width: 1200px;
-    margin: 100px auto 20px;
+    margin-top: 100px; /* Ajouter un espace en haut pour ne pas chevaucher le header */
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 70px; /* Assurez-vous que c'est au moins la hauteur du footer */
 }
 
 .admin-container h1 {
@@ -303,6 +307,23 @@ button:hover {
     font-size: 22px;
     color: #555;
     margin-top: 20px;
+}
+
+.admin-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin-container th, .admin-container td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.admin-container th {
+    background-color: #f4f4f9;
+    color: #333;
 }
 
 #userList li, #taskList li {
@@ -329,4 +350,85 @@ button:hover {
 .user-info {
     cursor: pointer;
     color: #007BFF;
+}
+
+.delete-user-btn, .delete-task-btn {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: #dc3545;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.delete-user-btn:hover, .delete-task-btn:hover {
+    color: #c82333;
+}
+
+/* Styles généraux pour le panel administrateur */
+.admin-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 120px auto 40px; /* Ajout de marge pour éviter la superposition avec le header */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Styles pour le tableau */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse; /* Élimine l'espace entre les bordures */
+}
+
+.admin-table th, .admin-table td {
+    padding: 12px;
+    border: 1px solid #ccc; /* Bordure légère pour chaque cellule */
+    text-align: left;
+}
+
+.admin-table th {
+    background-color: #007BFF;
+    color: white;
+}
+
+.admin-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; /* Couleur de fond pour les lignes impaires */
+}
+
+/* Boutons et icônes dans le tableau */
+.button-icon {
+    cursor: pointer;
+    font-size: 16px; /* Taille des icônes pour les boutons */
+    color: #dc3545; /* Couleur rouge pour les boutons de suppression */
+    background: none;
+    border: none;
+    padding: 5px 10px;
+}
+
+.button-icon:hover {
+    color: #bd2130; /* Couleur plus foncée au survol pour un meilleur contraste */
+}
+
+.status-btn {
+    color: #d49a2d; /* Vert pour les boutons d'état */
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.status-btn:hover {
+    color: #218838; /* Vert foncé au survol */
+}
+
+.status-btn.completed {
+    color: #28a745; /* Gris pour les tâches complétées */
+}
+
+/* Ajout de style pour l'en-tête du tableau pour une meilleure visibilité */
+.admin-container h1 {
+    margin-bottom: 20px;
+    color: #333;
 }

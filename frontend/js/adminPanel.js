@@ -1,128 +1,124 @@
 document.addEventListener('DOMContentLoaded', function() {
     fetchUsersAndTasks();
-    fetchUsers();
     checkLogin();
 });
 
-function fetchUsers() {
-    const token = sessionStorage.getItem('token');
-    fetch('http://localhost:3000/admin/users', {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + token
-        }
-    })
-    .then(response => response.json())
-    .then(data => displayUsers(data))
-    .catch(error => {
-        console.error('Error fetching users:', error);
-        alert('Failed to fetch users. See console for more details.');
-    });
-}
-
 function fetchUsersAndTasks() {
     const token = sessionStorage.getItem('token');
-    console.log('Token used:', token);  // Vérifiez que le token est présent
     fetch('http://localhost:3000/admin/users-tasks', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + token
         }
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Failed to fetch: ${response.statusText}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Data received:', data);  // Vérifiez les données reçues
-        displayUsersAndTasks(data);
-    })
-    .catch(error => {
-        console.error('Error fetching users and tasks:', error);
-        alert('Failed to fetch data from server. See console for more details.');
-    });
+    .then(response => response.json())
+    .then(data => displayUsersAndTasks(data))
+    .catch(error => console.error('Erreur lors de la récupération des utilisateurs et tâches:', error));
 }
 
-function displayUsersAndTasks(data) {
-    console.log('Displaying data:', data);  // Confirmer les données à afficher
+function displayUsersAndTasks(users) {
     const userList = document.getElementById('userList');
-    if (!userList) {
-        console.error('UserList element not found');
-        return;
-    }
-    userList.innerHTML = '';  // Nettoyer la liste avant d'ajouter de nouveaux éléments
-    data.forEach(user => {
-        const li = document.createElement('li');
-        li.textContent = ` Nom: ${user.username} - Tâche: ${user.description || 'Pas de tâche'} - Complétée: ${user.is_completed ? 'Yes' : 'No'}`;
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Supprimer';
-        deleteBtn.onclick = () => deleteUser(user.id);
-        li.appendChild(deleteBtn);
-        
-        userList.appendChild(li);
+    userList.innerHTML = '';  // Clear existing entries
+
+    const table = document.createElement('table');
+    table.className = 'admin-table';
+
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    ['Utilisateur', 'Tâche', 'Statut', 'Actions'].forEach(text => {
+        const th = document.createElement('th');
+        th.textContent = text;
+        headerRow.appendChild(th);
     });
-}
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
 
-function toggleTasks(userDiv) {
-    const taskList = userDiv.querySelector('.task-list');
-    taskList.classList.toggle('hidden');
-}
+    const tbody = document.createElement('tbody');
 
-function displayUsers(users) {
-    const userList = document.getElementById('userList');
-    userList.innerHTML = ''; // Nettoyer la liste avant d'ajouter
     users.forEach(user => {
-        const li = document.createElement('li');
-        li.textContent = user.username;
+        user.tasks.forEach((task, index) => {
+            const taskRow = document.createElement('tr');
 
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Supprimer';
-        deleteBtn.onclick = () => deleteUser(user.id);
-        li.appendChild(deleteBtn);
+            if (index === 0) {
+                const userCell = document.createElement('td');
+                userCell.textContent = user.username;
 
-        userList.appendChild(li);
+                // Add delete user button
+                const deleteUserBtn = document.createElement('button');
+                deleteUserBtn.className = 'btn delete-user-btn';
+                deleteUserBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                deleteUserBtn.onclick = () => deleteUser(user.id);
+
+                userCell.appendChild(deleteUserBtn);
+                userCell.rowSpan = user.tasks.length;  // Make the user name span all tasks
+                taskRow.appendChild(userCell);
+            }
+
+            const taskCell = document.createElement('td');
+            taskCell.textContent = task.description;
+            taskRow.appendChild(taskCell);
+
+            const statusCell = document.createElement('td');
+            const statusToggle = document.createElement('button');
+            statusToggle.className = task.is_completed ? 'btn status-btn completed' : 'btn status-btn';
+            statusToggle.textContent = task.is_completed ? 'Complétée' : 'En cours';
+            statusToggle.onclick = () => toggleTaskStatus(task.id, !task.is_completed);
+            statusCell.appendChild(statusToggle);
+            taskRow.appendChild(statusCell);
+
+            const actionCell = document.createElement('td');
+            const deleteTaskBtn = document.createElement('button');
+            deleteTaskBtn.className = 'btn delete-task-btn';
+            deleteTaskBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            deleteTaskBtn.onclick = () => deleteTask(task.id);
+            actionCell.appendChild(deleteTaskBtn);
+            taskRow.appendChild(actionCell);
+
+            tbody.appendChild(taskRow);
+        });
     });
+
+    table.appendChild(tbody);
+    userList.appendChild(table);
 }
+
+
+
+
+function toggleTaskStatus(taskId, isCompleted) {
+    const token = sessionStorage.getItem('token');
+    fetch(`http://localhost:3000/admin/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ is_completed: !isCompleted })
+    })
+    .then(response => response.json())
+    .then(() => {
+        fetchUsersAndTasks(); // Refresh list to show updated status
+    })
+    .catch(error => console.error('Error updating task status:', error));
+}
+
+
+
 
 function deleteUser(userId) {
     const token = sessionStorage.getItem('token');
     if (confirm('Confirmez-vous la suppression de cet utilisateur ?')) {
         fetch(`http://localhost:3000/admin/users/${userId}`, {
             method: 'DELETE',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
+            headers: { 'Authorization': 'Bearer ' + token }
         })
         .then(response => {
-            if (response.ok) {
-                alert('Utilisateur supprimé avec succès');
-                fetchUsers(); // Mise à jour de la liste des utilisateurs
-            } else {
-                alert('Erreur lors de la suppression de l\'utilisateur');
-            }
+            if (!response.ok) throw new Error('Échec de la suppression de l\'utilisateur');
+            alert('Utilisateur supprimé avec succès');
+            fetchUsersAndTasks();  // Mise à jour de la liste après suppression
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => alert('Erreur lors de la suppression de l\'utilisateur:', error));
     }
-}
-
-
-function displayTasks(tasks) {
-    const taskList = document.getElementById('taskList');
-    taskList.innerHTML = ''; // Nettoyer la liste avant d'ajouter
-    tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.textContent = task.description;
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Supprimer';
-        deleteBtn.onclick = () => deleteTask(task.id);
-        li.appendChild(deleteBtn);
-
-        taskList.appendChild(li);
-    });
 }
 
 function deleteTask(taskId) {
@@ -130,22 +126,16 @@ function deleteTask(taskId) {
     if (confirm('Confirmez-vous la suppression de cette tâche ?')) {
         fetch(`http://localhost:3000/admin/tasks/${taskId}`, {
             method: 'DELETE',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
+            headers: { 'Authorization': 'Bearer ' + token }
         })
         .then(response => {
-            if (response.ok) {
-                alert('Tâche supprimée avec succès');
-                fetchAdminTasks(); // Mise à jour de la liste des tâches
-            } else {
-                alert('Erreur lors de la suppression de la tâche');
-            }
+            if (!response.ok) throw new Error('Échec de la suppression de la tâche');
+            alert('Tâche supprimée avec succès');
+            fetchUsersAndTasks();  // Mise à jour de la liste après suppression
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => alert('Erreur lors de la suppression de la tâche:', error));
     }
 }
-
 
 function checkLogin() {
     const token = sessionStorage.getItem('token');
@@ -153,15 +143,15 @@ function checkLogin() {
     const logoutLink = document.getElementById('logoutLink');
 
     if (token) {
-        loginLink.style.display = 'none';  // Masquer le lien de connexion
-        logoutLink.style.display = 'block';  // Afficher le lien de déconnexion
+        loginLink.style.display = 'none';
+        logoutLink.style.display = 'block';
     } else {
-        loginLink.style.display = 'block';  // Afficher le lien de connexion
-        logoutLink.style.display = 'none';  // Masquer le lien de déconnexion
+        loginLink.style.display = 'block';
+        logoutLink.style.display = 'none';
     }
 }
 
 function logout() {
     sessionStorage.removeItem('token');
-    window.location.href = 'login.html';  // Rediriger vers la page de connexion après la déconnexion
+    window.location.href = 'login.html';
 }
