@@ -113,30 +113,33 @@ function editTask(taskId, oldDescription) {
 function updateUI(tasks) {
     const listElement = document.getElementById('todoList');
     listElement.innerHTML = '';
+
     tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.className = task.is_completed ? 'completed' : '';
-        
+        const taskElement = document.createElement('li');
+        taskElement.className = task.is_completed ? 'completed' : '';
+
         const taskText = document.createElement('span');
         taskText.textContent = task.description;
         taskText.className = 'task-text';
+        taskElement.appendChild(taskText);
+        task.steps = task.steps || [];
 
-        const completeButton = document.createElement('button');
-        completeButton.innerHTML = '<i class="fas fa-check"></i>';
-        completeButton.onclick = () => completeTask(task.id);
+        // Ajouter les étapes ici si elles existent
+        if (task.steps && Array.isArray(task.steps)) {
+            const stepsList = document.createElement('ul');
+            task.steps.forEach(step => {
+                const stepElement = document.createElement('li');
+                stepElement.textContent = `${step.description} - ${step.is_completed ? 'Complétée' : 'En cours'}`;
+                stepsList.appendChild(stepElement);
+            });
+            taskElement.appendChild(stepsList);
+        }
 
-        const editButton = document.createElement('button');
-        editButton.innerHTML = '<i class="fas fa-edit"></i>';
-        editButton.onclick = () => editTask(task.id, task.description);
-
-        const deleteButton = document.createElement('button');
-        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        deleteButton.onclick = () => deleteTask(task.id);
-
-        li.append(taskText, completeButton, editButton, deleteButton);
-        listElement.appendChild(li);
+        listElement.appendChild(taskElement);
     });
 }
+
+
 
 
 function fetchTasks() {
@@ -153,12 +156,16 @@ function fetchTasks() {
         }
     })
     .then(handleResponse)
-    .then(updateUI)
+    .then(tasks => {
+        console.log("Tasks received:", tasks); // Ajoutez ceci pour voir les tâches reçues
+        updateUI(tasks);
+    })
     .catch(handleError);
 }
 
+
 function handleResponse(response) {
-    if (!response.ok) throw Error(response.statusText);
+    if (!response.ok) throw Error('Erreur lors de la récupération des données: ' + response.statusText);
     return response.json();
 }
 
@@ -244,3 +251,39 @@ function login() {
     });
 }
 
+
+function addStep(taskId) {
+    const stepDescription = prompt("Description de la nouvelle étape:");
+    if (!stepDescription) return;
+
+    const token = sessionStorage.getItem('token');
+    fetch(`http://localhost:3000/tasks/${taskId}/steps`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ description: stepDescription })
+    })
+    .then(response => response.json())
+    .then(() => {
+        alert("Étape ajoutée avec succès.");
+        fetchTasks();  // Refresh the task list to show new step
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function toggleStepStatus(stepId) {
+    const token = sessionStorage.getItem('token');
+    fetch(`http://localhost:3000/steps/${stepId}/toggle`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Échec du changement de statut de l'étape");
+        fetchTasks();  // Refresh tasks to show updated step status
+    })
+    .catch(error => console.error('Error:', error));
+}

@@ -32,7 +32,17 @@
         <input type="text" id="taskDescription" placeholder="Ajouter une nouvelle tâche" required> <!-- Assurez-vous que l'ID est correct -->
         <button class="action-btn add-task" onclick="addTask()">Ajouter</button>
         <ul id="todoList">
-            <!-- La todo list sera ajoutée ici -->
+            <!-- Ajouter un modal ou une section pour les détails des tâches et la gestion des étapes -->
+            <div id="taskModal" class="task-modal" style="display:none;">
+                <h2>Étapes de la tâche</h2>
+                <ul id="stepList">
+                    <!-- Les étapes de la tâche seront ajoutées ici -->
+                </ul>
+                <input type="text" id="stepDescription" placeholder="Ajouter une nouvelle étape">
+                <button onclick="addStep()">Ajouter Étape</button>
+                <button onclick="closeModal()">Fermer</button>
+            </div>
+
         </ul>
     </section>
     <footer>

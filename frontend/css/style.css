@@ -432,3 +432,104 @@ button:hover {
     margin-bottom: 20px;
     color: #333;
 }
+
+
+/* Styles for tasks and their steps */
+.task-list {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+.task-list li {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.task-detail {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.step-list {
+    margin-top: 5px;
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.step-item {
+    padding: 5px 0;
+}
+
+.step-action {
+    margin-left: auto;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+.step-action:hover {
+    background-color: #0056b3;
+}
+
+.delete-btn, .edit-btn, .complete-btn {
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #ffc107; 
+}
+
+.complete-btn {
+    background-color: #28a745; 
+}
+
+.delete-btn:hover, .edit-btn:hover, .complete-btn:hover {
+    opacity: 0.9;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+}
+
+.icon-button:hover {
+    color: #333;
+}
+
+.task-text {
+    display: flex;
+    align-items: center;
+}
+
+.task-icon {
+    margin-right: 5px;
+    color: #28a745; 
+}
+
+.task-completed .task-text {
+    color: #aaa;
+    text-decoration: line-through;
+}
